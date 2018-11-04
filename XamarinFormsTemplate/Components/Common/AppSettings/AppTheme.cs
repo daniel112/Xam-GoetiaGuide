@@ -23,7 +23,7 @@ namespace GoetiaGuide.Core.Common {
         #region Public API
 
         public static string DefaultBarBackgroundColor() {
-            return "#ffffff";
+            return "#333538";
         }
 
         public static string DefaultTextColor() {

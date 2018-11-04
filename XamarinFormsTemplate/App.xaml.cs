@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using GoetiaGuide.Core.Common;
 using GoetiaGuide.Core.Views.ContentPages;
+using GoetiaGuide.Views;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace GoetiaGuide.Core {
@@ -16,7 +17,7 @@ namespace GoetiaGuide.Core {
         public App() {
             InitializeComponent();
 
-            MainPage = new MainContentPage();
+            MainPage = new DisclaimerContentPage();
         }
 
         protected override void OnStart() {
