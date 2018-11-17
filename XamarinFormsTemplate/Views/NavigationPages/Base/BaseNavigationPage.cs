@@ -9,6 +9,7 @@ namespace GoetiaGuide.Core.Views {
 
         public BaseNavigationPage(Page root) : base(root) {
             BarBackgroundColor = Color.FromHex(AppTheme.DefaultBarBackgroundColor());
+            BackgroundColor = Color.FromHex(AppTheme.DefaultBarBackgroundColor());
             BarTextColor = Color.FromHex(AppTheme.DefaultTextColor());
         }
     }

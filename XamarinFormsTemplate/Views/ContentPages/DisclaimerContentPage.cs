@@ -33,7 +33,7 @@ namespace GoetiaGuide.Views {
             get {
                 if (_LabelDisclaimer == null) {
                     var formattedString = new FormattedString();
-                    formattedString.Spans.Add(new Span { Text = "Adult Warning: ", ForegroundColor = Color.FromHex("#d65448"), FontAttributes = FontAttributes.Bold });
+                    formattedString.Spans.Add(new Span { Text = "Adult Warning: ", ForegroundColor = Color.FromHex("#d65448"), FontAttributes = FontAttributes.Bold, FontSize = 17 });
                     formattedString.Spans.Add(new Span { Text = "Treat spirits with respect. This app is for serious practitioners of Magick only. Please do not attempt to summon" +
                             " these spirits and demand anything. Use your manners! We are not responsible for any damage you do to yourself."});
 
@@ -54,7 +54,19 @@ namespace GoetiaGuide.Views {
             }
         }
 
-
+        private Image _ImageBackground;
+        private Image ImageBackground {
+            get {
+                if (_ImageBackground == null) {
+                    _ImageBackground = new Image {
+                        Aspect = Aspect.AspectFit,
+                        Opacity = 0.1f,
+                        Source = "background_disclaimer",
+                    };
+                }
+                return _ImageBackground;
+            }
+        }
 
         private StackLayout _StackDisclaimer;
         private StackLayout StackDisclaimer {
@@ -91,6 +103,10 @@ namespace GoetiaGuide.Views {
             this.BackgroundColor = Color.FromHex(AppTheme.DefaultBarBackgroundColor());
             AbsoluteLayout layout = new AbsoluteLayout();
 
+            // background image
+            AbsoluteLayout.SetLayoutFlags(this.ImageBackground, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(this.ImageBackground, new Rectangle(0, 0.5, 1, 1));
+            layout.Children.Add(this.ImageBackground);
 
             this.StackDisclaimer.Children.Add(this.LabelDisclaimer);
             // center label
@@ -121,6 +137,7 @@ namespace GoetiaGuide.Views {
 
         // UIResponder
         void DismissButton_Clicked(object sender, EventArgs e) {
+
             Application.Current.MainPage = new BaseNavigationPage(new MainContentPage());
 
         }

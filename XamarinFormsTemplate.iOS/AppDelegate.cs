@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Amazon;
+﻿using Amazon;
 using Foundation;
 using GoetiaGuide.Core;
 using UIKit;
@@ -32,6 +29,9 @@ namespace GoetiaGuide.iOS {
             loggingConfig.LogResponses = ResponseLoggingOption.Always;
             loggingConfig.LogMetricsFormat = LogMetricsFormatOption.JSON;
             loggingConfig.LogTo = LoggingOptions.SystemDiagnostics;
+
+
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
 
             LoadApplication(new App());
 

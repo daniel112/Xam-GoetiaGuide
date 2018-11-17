@@ -48,6 +48,8 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                 return _Image;
             }
         }
+
+
         #endregion
 
         #region Initialization
@@ -61,35 +63,21 @@ namespace GoetiaGuide.Core.Views.ContentPages {
         #region Private API
         private void Setup() {
 
+
+            AbsoluteLayout layout = new AbsoluteLayout();
+
+
             // stackview
             this.ContentStackLayout.Children.Add(this.Image);
-            HorizontalLabelDetailContentView test = new HorizontalLabelDetailContentView("Description:", "Detail") {
-                Margin = new Thickness(30, 5, 30, 0)
-            };
-            HorizontalLabelDetailContentView test1 = new HorizontalLabelDetailContentView("Direction:", "Detail2") {
-                Margin = new Thickness(30, 5, 30, 0)
-            };
-            HorizontalLabelDetailContentView test2 = new HorizontalLabelDetailContentView("Tarot:", "Detail3") {
-                Margin = new Thickness(30, 5, 30, 0)
-            };
-            HorizontalLabelDetailContentView test3 = new HorizontalLabelDetailContentView("Title3:", "Detail4") {
-                Margin = new Thickness(30, 5, 30, 0)
-            };
-            HorizontalLabelDetailContentView test4 = new HorizontalLabelDetailContentView("Demonic Enn:", "Ayer avage Shax aken") {
-                Margin = new Thickness(30, 5, 30, 0),
-                LabelColor = Color.FromHex("#d65448")
-            };
-            this.ContentStackLayout.Children.Add(test);
-            this.ContentStackLayout.Children.Add(test1);
-            this.ContentStackLayout.Children.Add(test2);
-            this.ContentStackLayout.Children.Add(test3);
-            this.ContentStackLayout.Children.Add(test4);
 
 
             // scrollview
             this.ScrollViewContent.Content = this.ContentStackLayout;
+            AbsoluteLayout.SetLayoutFlags(this.ScrollViewContent, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(this.ScrollViewContent, new Rectangle(0, 0, 1, 1));
+            layout.Children.Add(this.ScrollViewContent);
 
-            this.Content = this.ScrollViewContent;
+            this.Content = layout;
         }
         #endregion
 

@@ -110,47 +110,32 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon1024.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon180.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon167.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon152.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon120.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon87.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon80.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon76.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon58.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon40.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon29.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\test.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\test.imageset\image13.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\4040.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\6060.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\5858.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\8787.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\8080.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\120120.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\180180.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\10241024.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\2929.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\7676.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\152152.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\167167.png" />
+    <ImageAsset Include="Assets.xcassets\app_icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\app_icon.imageset\8080.png" />
+    <ImageAsset Include="Assets.xcassets\icon_search.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\icon_search.imageset\baseline_search_white_24pt_1x.png" />
+    <ImageAsset Include="Assets.xcassets\icon_search.imageset\baseline_search_white_24pt_2x.png" />
+    <ImageAsset Include="Assets.xcassets\icon_search.imageset\baseline_search_white_24pt_3x.png" />
+    <ImageAsset Include="Assets.xcassets\icon_pentagram.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\icon_pentagram.imageset\pentagram.png" />
+    <ImageAsset Include="Assets.xcassets\background_main.imageset\bg1.png" />
+    <ImageAsset Include="Assets.xcassets\background_main.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\background_disclaimer.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\background_disclaimer.imageset\detailbg.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -159,16 +144,21 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.3.0.912540" />
+    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1008975" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets.xcassets\test.imageset\" />
+    <Folder Include="Assets.xcassets\app_icon.imageset\" />
+    <Folder Include="Assets.xcassets\icon_search.imageset\" />
+    <Folder Include="Assets.xcassets\icon_pentagram.imageset\" />
+    <Folder Include="Assets.xcassets\background_main.imageset\" />
+    <Folder Include="Assets.xcassets\background_disclaimer.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XamarinFormsTemplate\GoetiaGuide.Core.csproj">
       <Project>{C3CD1FBB-43C5-4FB0-9CDA-C6F3F5609517}</Project>
       <Name>GoetiaGuide.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets.xcassets\test.imageset\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

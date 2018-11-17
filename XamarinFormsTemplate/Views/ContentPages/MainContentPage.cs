@@ -8,6 +8,9 @@ using GoetiaGuide.Core.Models;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using GoetiaGuide.Core.Views.ContentViews;
+using FFImageLoading.Forms;
+using FFImageLoading.Work;
+using FFImageLoading.Transformations;
 
 namespace GoetiaGuide.Core.Views.ContentPages {
     public class MainContentPage : BaseContentPage<MainViewModel>, IInputTextDelegate {
@@ -73,7 +76,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                         HorizontalOptions = LayoutOptions.Center,
                         HorizontalTextAlignment = TextAlignment.Center,
                         VerticalOptions = LayoutOptions.Center,
-                        Margin = new Thickness(30, 0, 30, 0)
+                        Margin = new Thickness(30, 30, 30, 0)
                     };
                 }
 
@@ -85,7 +88,10 @@ namespace GoetiaGuide.Core.Views.ContentPages {
         private ScrollView ScrollViewContent {
             get {
                 if (_ScrollViewContent == null) {
-                    _ScrollViewContent = new ScrollView();
+                    _ScrollViewContent = new ScrollView {
+                        Margin = new Thickness(0, 0, 0, 20)
+
+                    };
                 }
                 return _ScrollViewContent;
             }
@@ -95,7 +101,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
         private InputTextContentView InputSearch {
             get {
                 if (_InputSearch == null) {
-                    _InputSearch = new InputTextContentView("InputTextIdentifierSearch", "", "Type something...", false, "input_username", this) {
+                    _InputSearch = new InputTextContentView("InputTextIdentifierSearch", "", "Enter 1-2 word(s)..", false, "icon_search", this) {
                         Margin = new Thickness(30, 20, 30, 10),
                         //HeightRequest = 70
                     };
@@ -105,7 +111,51 @@ namespace GoetiaGuide.Core.Views.ContentPages {
             }
         }
 
+        private Image _Image;
+        private Image Image {
+            get {
+                if (_Image == null) {
+                    _Image = new Image {
+                        Aspect = Aspect.AspectFit,
+                        Opacity = 0.1f,
+                        Source = "background_main",
+                        VerticalOptions = LayoutOptions.Center,
+                        HorizontalOptions = LayoutOptions.Center,
+                    };
+                }
+                return _Image;
+            }
+        }
 
+        private readonly CachedImage ImagePentagram = new CachedImage() {
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+            WidthRequest = 100,
+            Aspect = Aspect.AspectFit,
+            CacheDuration = TimeSpan.FromDays(30),
+            DownsampleToViewSize = true,
+            RetryCount = 0,
+            RetryDelay = 250,
+            Opacity = 0.4f,
+            Source = "icon_pentagram",
+            Transformations = new List<ITransformation>() {
+                new TintTransformation("#ffffff") {
+                    EnableSolidColor = true
+                }
+            },
+        };
+
+        private StackLayout _StackLayout;
+        private StackLayout StackLayout {
+            get {
+                if (_StackLayout == null) {
+                    _StackLayout = new StackLayout {
+                        VerticalOptions = LayoutOptions.CenterAndExpand,
+                    };
+                }
+                return _StackLayout;
+            }
+        }
         #endregion
 
         #region Initialization
@@ -123,25 +173,36 @@ namespace GoetiaGuide.Core.Views.ContentPages {
 
             NavigationPage.SetBackButtonTitle(this, "");
             this.Title = "Find A Spirit";
-            this.ScrollViewContent.Content = new StackLayout {
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                Children = {
-                    //this.LabelTitle,
-                    this.LabelSubLabel,
-                    this.InputSearch,
-                    this.ButtonSearch,
-                    this.ButtonRandom,
 
-                }
-            };
-            Content = this.ScrollViewContent;
+            AbsoluteLayout layout = new AbsoluteLayout();
+
+            // background image
+            AbsoluteLayout.SetLayoutFlags(this.Image, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.SizeProportional);
+            AbsoluteLayout.SetLayoutBounds(this.Image, new Rectangle(0, 0, 1, 1));
+            layout.Children.Add(this.Image);
+
+            // stacklayout
+            this.StackLayout.Children.Add(this.ImagePentagram);
+            this.StackLayout.Children.Add(LabelSubLabel);
+            this.StackLayout.Children.Add(InputSearch);
+            this.StackLayout.Children.Add(ButtonSearch);
+            this.StackLayout.Children.Add(ButtonRandom);
+
+            // scrollview
+            this.ScrollViewContent.Content = this.StackLayout;
+            AbsoluteLayout.SetLayoutFlags(this.ScrollViewContent, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(this.ScrollViewContent, new Rectangle(0, 0, 1, 1));
+            layout.Children.Add(this.ScrollViewContent);
+
+            Content = layout;
 
         }
 
         async void ButtonRandom_ClickedAsync(object sender, EventArgs e) {
 
-            GoetiaDetailContentPage destinationCP = new GoetiaDetailContentPage();
-            destinationCP.Title = "Item Name";
+            GoetiaDetailContentPage destinationCP = new GoetiaDetailContentPage {
+                Title = "Item Name"
+            };
             await this.Navigation.PushAsync(destinationCP);
 
         }

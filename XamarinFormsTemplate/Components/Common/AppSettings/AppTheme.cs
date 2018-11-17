@@ -31,7 +31,7 @@ namespace GoetiaGuide.Core.Common {
         }
 
         public static string DefaultBakcgroundColor() {
-            return "#CCCCCC";
+            return "#333538";
         }
         #endregion
 

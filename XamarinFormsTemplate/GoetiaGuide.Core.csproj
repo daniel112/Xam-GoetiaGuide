@@ -11,10 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.3.0.912540" />
-    <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.2.37" />
-    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.14.5" />
-    <PackageReference Include="AWSSDK.S3" Version="3.3.25" />
+    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1008975" />
+    <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.2.53" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.14.21" />
+    <PackageReference Include="AWSSDK.S3" Version="3.3.27.1" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.4.859" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.4.859" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
