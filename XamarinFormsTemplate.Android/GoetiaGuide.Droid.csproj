@@ -66,6 +66,7 @@
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="CustomRenderers\BorderlessEntryCustomRenderer.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
+    <Compile Include="CustomRenderers\ViewCells\ImageLabelViewCellRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -112,6 +113,11 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\background_main.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\background_disclaimer.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\background_main.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\arrow_right.png" />
+    <AndroidResource Include="Resources\drawable\arrow_right.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\arrow_right.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\arrow_right.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\arrow_right.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
@@ -126,6 +132,7 @@
     <Folder Include="Resources\mipmap-xxxhdpi\" />
     <Folder Include="Resources\mipmap-anydpi-v26\" />
     <Folder Include="Resources\mipmap-mdpi\" />
+    <Folder Include="CustomRenderers\ViewCells\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XamarinFormsTemplate\GoetiaGuide.Core.csproj">

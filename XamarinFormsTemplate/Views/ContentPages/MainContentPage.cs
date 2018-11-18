@@ -33,7 +33,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                         Margin = new Thickness(30, 30, 30, 0)
 
                     };
-                    _ButtonSearch.Clicked += ButtonLogin_ClickedAsync;
+                    _ButtonSearch.Clicked += ButtonSearch_Clicked;
 
 
                 }
@@ -207,27 +207,8 @@ namespace GoetiaGuide.Core.Views.ContentPages {
 
         }
 
-        async void ButtonLogin_ClickedAsync(object sender, EventArgs e) {
-            //this.GoetiaAPIManager.testImage();
-            // TODO: SAVE TEST
-
-            // testing GET - success
-            //Goetia test = this.GoetiaAPIManager.GetByName("Belial");
-            //bool saveSuccess = await this.UserAPIManager.SaveAsync(new User("danielyo1", "password1"));
-            //if (saveSuccess) {
-            //    Console.WriteLine("success");
-            //} else {
-            //    Console.WriteLine("fail");
-
-            //}
-
-
-
-
-
-
-
-            Console.WriteLine("DONE");
+        private void ButtonSearch_Clicked(object sender, EventArgs e) {
+            Navigation.PushAsync(new GoetiaListContentPage());
         }
 
 

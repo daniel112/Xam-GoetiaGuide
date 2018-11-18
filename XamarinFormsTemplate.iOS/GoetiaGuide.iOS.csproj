@@ -104,6 +104,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\DeviceOrientation.cs" />
     <Compile Include="CustomRenderers\EntryBorderlessCustomRenderer.cs" />
+    <Compile Include="CustomRenderers\ViewCells\ImageLabelViewCellRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -136,6 +137,11 @@
     <ImageAsset Include="Assets.xcassets\background_main.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\background_disclaimer.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\background_disclaimer.imageset\detailbg.png" />
+    <ImageAsset Include="Assets.xcassets\navigation.spriteatlas\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\navigation.spriteatlas\arrow_right.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\navigation.spriteatlas\arrow_right.imageset\baseline_arrow_forward_ios_white_24pt_1x.png" />
+    <ImageAsset Include="Assets.xcassets\navigation.spriteatlas\arrow_right.imageset\baseline_arrow_forward_ios_white_24pt_2x.png" />
+    <ImageAsset Include="Assets.xcassets\navigation.spriteatlas\arrow_right.imageset\baseline_arrow_forward_ios_white_24pt_3x.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -153,6 +159,9 @@
     <Folder Include="Assets.xcassets\icon_pentagram.imageset\" />
     <Folder Include="Assets.xcassets\background_main.imageset\" />
     <Folder Include="Assets.xcassets\background_disclaimer.imageset\" />
+    <Folder Include="Assets.xcassets\navigation.spriteatlas\" />
+    <Folder Include="Assets.xcassets\navigation.spriteatlas\arrow_right.imageset\" />
+    <Folder Include="CustomRenderers\ViewCells\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XamarinFormsTemplate\GoetiaGuide.Core.csproj">
