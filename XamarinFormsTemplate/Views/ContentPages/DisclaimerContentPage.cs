@@ -1,5 +1,6 @@
 ﻿using System;
 using GoetiaGuide.Core.Common;
+using GoetiaGuide.Core.Components;
 using GoetiaGuide.Core.ViewModels;
 using GoetiaGuide.Core.Views;
 using GoetiaGuide.Core.Views.Base;
@@ -21,33 +22,50 @@ namespace GoetiaGuide.Views {
                         HorizontalOptions = LayoutOptions.FillAndExpand,
                         CornerRadius = 0,
                     };
+                    _DismissButton.SetDynamicResource(StyleProperty, ApplicationResourcesConstants.CustomFontFamily);
                     _DismissButton.Clicked += DismissButton_Clicked;
                 }
                 return _DismissButton;
             }
         }
 
+        private Label _LabelAdultWarning;
+        private Label LabelAdultWarning {
+            get {
+                if (_LabelAdultWarning == null) {
 
+                    _LabelAdultWarning = new Label {
+                        FormattedText = "Adult Warning",
+                        FontSize = 18,
+                        TextColor = Color.FromHex("#d65448"),
+                        LineBreakMode = LineBreakMode.WordWrap,
+                        HorizontalOptions = LayoutOptions.Center,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        VerticalOptions = LayoutOptions.Center,
+                        Margin = new Thickness(30, 0, 30, 0)
+                    };
+                    _LabelAdultWarning.SetDynamicResource(StyleProperty, ApplicationResourcesConstants.CustomFontFamily);
+                }
+
+                return _LabelAdultWarning;
+            }
+        }
         private Label _LabelDisclaimer;
         private Label LabelDisclaimer {
             get {
                 if (_LabelDisclaimer == null) {
-                    var formattedString = new FormattedString();
-                    formattedString.Spans.Add(new Span { Text = "Adult Warning: ", ForegroundColor = Color.FromHex("#d65448"), FontAttributes = FontAttributes.Bold, FontSize = 17 });
-                    formattedString.Spans.Add(new Span { Text = "Treat spirits with respect. This app is for serious practitioners of Magick only. Please do not attempt to summon" +
-                            " these spirits and demand anything. Use your manners! We are not responsible for any damage you do to yourself."});
-
                     _LabelDisclaimer = new Label {
-                        FormattedText = formattedString,                     
-                        FontSize = 17,
+                        Text = "Treat spirits with respect. This app is for serious practitioners of Magick only. Please do not attempt to summon" +
+                            " these spirits and demand anything. Use your manners! We are not responsible for any damage you do to yourself.",
+                        FontSize = 16,
                         TextColor = Color.White.MultiplyAlpha(0.7f),
-                        FontFamily = "Cambria",
                         LineBreakMode = LineBreakMode.WordWrap,
                         HorizontalOptions = LayoutOptions.Center,
                         HorizontalTextAlignment = TextAlignment.Center,
                         VerticalOptions = LayoutOptions.Center,
                         Margin = new Thickness(30, 0, 30 , 0)
                     };
+                    _LabelDisclaimer.SetDynamicResource(StyleProperty, ApplicationResourcesConstants.CustomFontFamily);
                 }
 
                 return _LabelDisclaimer;
@@ -108,6 +126,7 @@ namespace GoetiaGuide.Views {
             AbsoluteLayout.SetLayoutBounds(this.ImageBackground, new Rectangle(0, 0.5, 1, 1));
             layout.Children.Add(this.ImageBackground);
 
+            this.StackDisclaimer.Children.Add(this.LabelAdultWarning);
             this.StackDisclaimer.Children.Add(this.LabelDisclaimer);
             // center label
             AbsoluteLayout.SetLayoutFlags(this.StackDisclaimer, AbsoluteLayoutFlags.PositionProportional);

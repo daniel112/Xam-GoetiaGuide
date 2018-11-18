@@ -49,13 +49,20 @@ namespace GoetiaGuide.Core.Views.ContentPages {
             }
         }
 
+        private readonly DimActivityIndicatorContentView CustomActivityIndicator = new DimActivityIndicatorContentView();
 
         #endregion
 
         #region Initialization
-        public GoetiaDetailContentPage() {
+        public GoetiaDetailContentPage(int id) {
             this.Setup();
+            ViewModel.ID = id;
         }
+        protected override void OnAppearing() {
+            base.OnAppearing();
+            this.LoadGoetiaDetail();
+        }
+
         protected override void OnOrientationUpdate(DeviceOrientatione orientation) {
         }
         #endregion
@@ -63,12 +70,8 @@ namespace GoetiaGuide.Core.Views.ContentPages {
         #region Private API
         private void Setup() {
 
-
+            this.Title = "Details";
             AbsoluteLayout layout = new AbsoluteLayout();
-
-
-            // stackview
-            this.ContentStackLayout.Children.Add(this.Image);
 
 
             // scrollview
@@ -77,7 +80,19 @@ namespace GoetiaGuide.Core.Views.ContentPages {
             AbsoluteLayout.SetLayoutBounds(this.ScrollViewContent, new Rectangle(0, 0, 1, 1));
             layout.Children.Add(this.ScrollViewContent);
 
+            AbsoluteLayout.SetLayoutFlags(CustomActivityIndicator, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(CustomActivityIndicator, new Rectangle(0, 0, 1, 1));
+            layout.Children.Add(CustomActivityIndicator);
+            this.CustomActivityIndicator.IsRunning = true;
+
+
             this.Content = layout;
+        }
+
+        private void LoadGoetiaDetail() {
+            this.ViewModel.GetItemDetails();
+            Console.WriteLine(ViewModel.Goetia.Name);
+            if (CustomActivityIndicator.IsRunning) { CustomActivityIndicator.IsRunning = false; }
         }
         #endregion
 

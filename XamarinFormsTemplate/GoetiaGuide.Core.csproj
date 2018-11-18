@@ -11,12 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1008975" />
     <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.2.53" />
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.14.21" />
     <PackageReference Include="AWSSDK.S3" Version="3.3.27.1" />
-    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.4.859" />
-    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.4.859" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.1.823" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.1.823" />
+    <PackageReference Include="Xamarin.Forms" Version="3.3.0.967583" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -26,5 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Network\BaseAPI.cs" />
+    <Compile Remove="Constants\Contsants.cs" />
+    <Compile Remove="Constants\Constants.cs" />
   </ItemGroup>
 </Project>

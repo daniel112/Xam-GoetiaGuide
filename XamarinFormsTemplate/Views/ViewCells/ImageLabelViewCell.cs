@@ -5,12 +5,12 @@ namespace GoetiaGuide.Core.Views.ViewCells {
     public class ImageLabelViewModel {
         public string Text { get; set; }
         public string ImageName { get; set; }
+        public int ID { get; set; }
 
-        public ImageLabelViewModel() {
-        }
-        public ImageLabelViewModel(string text, string imageName) {
+        public ImageLabelViewModel(string text, string imageName, int id) {
             this.Text = text;
             this.ImageName = imageName;
+            this.ID = id;
         }
     }
 

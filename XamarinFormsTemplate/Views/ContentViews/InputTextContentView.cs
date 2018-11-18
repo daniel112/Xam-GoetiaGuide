@@ -111,7 +111,7 @@ namespace GoetiaGuide.Core.Views.ContentViews {
                         HorizontalTextAlignment = TextAlignment.Start,
                         BackgroundColor = Color.Transparent
                     };
-                    _LabelTitle.SetDynamicResource(StyleProperty, ApplicationResourcesConstants.StyleLabelFontFamily); // TODO: ADD NEW FONT TO XML
+                    _LabelTitle.SetDynamicResource(StyleProperty, ApplicationResourcesConstants.CustomFontFamily); 
                 }
 
                 return _LabelTitle;

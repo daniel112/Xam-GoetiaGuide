@@ -11,6 +11,7 @@ using GoetiaGuide.Core.Views.ContentViews;
 using FFImageLoading.Forms;
 using FFImageLoading.Work;
 using FFImageLoading.Transformations;
+using GoetiaGuide.Core.Components;
 
 namespace GoetiaGuide.Core.Views.ContentPages {
     public class MainContentPage : BaseContentPage<MainViewModel>, IInputTextDelegate {
@@ -25,7 +26,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                 if (_ButtonSearch == null) {
                     _ButtonSearch = new Button {
                         Text = "Search",
-                        FontSize = 18,
+                        FontSize = 16,
                         TextColor = Color.White,
                         BackgroundColor = Color.FromHex("#7f1808"),
                         CornerRadius = 8,
@@ -33,6 +34,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                         Margin = new Thickness(30, 30, 30, 0)
 
                     };
+                    _ButtonSearch.SetDynamicResource(StyleProperty, ApplicationResourcesConstants.CustomFontFamily);
                     _ButtonSearch.Clicked += ButtonSearch_Clicked;
 
 
@@ -47,7 +49,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                 if (_ButtonRandom == null) {
                     _ButtonRandom = new Button {
                         Text = "Feeling Lucky?",
-                        FontSize = 18,
+                        FontSize = 16,
                         TextColor = Color.White,
                         BackgroundColor = Color.FromHex("#7f1808"),
                         CornerRadius = 8,
@@ -55,6 +57,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                         Margin = new Thickness(30, 10, 30, 0)
 
                     };
+                    _ButtonRandom.SetDynamicResource(StyleProperty, ApplicationResourcesConstants.CustomFontFamily);
                     _ButtonRandom.Clicked += ButtonRandom_ClickedAsync;
 
 
@@ -70,7 +73,6 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                     _LabelSubLabel = new Label {
                         Text = "Type your specific need or name of the spirit you wish to contact in the search bar below \n The spirits are expecting you...",
                         FontSize = 14,
-                        FontFamily = "Cambria",
                         TextColor = Color.White.MultiplyAlpha(0.5f),
                         LineBreakMode = LineBreakMode.WordWrap,
                         HorizontalOptions = LayoutOptions.Center,
@@ -200,9 +202,8 @@ namespace GoetiaGuide.Core.Views.ContentPages {
 
         async void ButtonRandom_ClickedAsync(object sender, EventArgs e) {
 
-            GoetiaDetailContentPage destinationCP = new GoetiaDetailContentPage {
-                Title = "Item Name"
-            };
+            // TODO: Random number between 1-72
+            GoetiaDetailContentPage destinationCP = new GoetiaDetailContentPage(1);
             await this.Navigation.PushAsync(destinationCP);
 
         }

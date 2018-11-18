@@ -19,7 +19,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                         SeparatorVisibility = SeparatorVisibility.None,
                         ItemTemplate = new DataTemplate(typeof(ImageLabelViewCell))
                     };
-                    _ListView.ItemSelected += ListView_ItemSelected;
+                    _ListView.ItemTapped += ListView_ItemTapped;
                 }
                 return _ListView;
             }
@@ -42,28 +42,25 @@ namespace GoetiaGuide.Core.Views.ContentPages {
         }
 
         private void LoadData() {
-            ViewModel.Items.Add(new ImageLabelViewModel("Item 1", "test"));
-            ViewModel.Items.Add(new ImageLabelViewModel("Item 2", "test"));
-            ViewModel.Items.Add(new ImageLabelViewModel("Item 3", "test"));
+            ViewModel.Items.Add(new ImageLabelViewModel("Item 1", "test", 1));
+            ViewModel.Items.Add(new ImageLabelViewModel("Item 2", "test", 2));
+            ViewModel.Items.Add(new ImageLabelViewModel("Item 3", "test", 3));
 
             ListView.ItemsSource = ViewModel.Items;
         }
 
-        //this.GoetiaAPIManager.testImage();
-        // TODO: SAVE TEST
 
-        // testing GET - success
-        //Goetia test = this.GoetiaAPIManager.GetByName("Belial");
-        //bool saveSuccess = await this.UserAPIManager.SaveAsync(new User("danielyo1", "password1"));
-        //if (saveSuccess) {
-        //    Console.WriteLine("success");
-        //} else {
-        //    Console.WriteLine("fail");
+        private void ListView_ItemTapped(object sender, ItemTappedEventArgs e) {
 
-        //}
-        void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e) {
+            ImageLabelViewModel item = (ImageLabelViewModel)e.Item;
 
-            ListView.SelectedItem = null;
+            GoetiaDetailContentPage destinationCP = new GoetiaDetailContentPage(item.ID);
+            this.Navigation.PushAsync(destinationCP);
+
+            // deselect
+            ((ListView)sender).SelectedItem = null;
+
+
         }
         #endregion
 
