@@ -68,6 +68,7 @@ namespace GoetiaGuide.Core.Network {
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
                 goetia.Success = false;
+                goetia.Message = e.Message;
             }
 
             return goetia;

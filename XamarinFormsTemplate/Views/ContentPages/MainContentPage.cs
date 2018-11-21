@@ -202,8 +202,8 @@ namespace GoetiaGuide.Core.Views.ContentPages {
 
         async void ButtonRandom_ClickedAsync(object sender, EventArgs e) {
 
-            // TODO: Random number between 1-72
-            GoetiaDetailContentPage destinationCP = new GoetiaDetailContentPage(1);
+            int randomNumber = new Random().Next(1, 72);
+            GoetiaDetailContentPage destinationCP = new GoetiaDetailContentPage(randomNumber);
             await this.Navigation.PushAsync(destinationCP);
 
         }

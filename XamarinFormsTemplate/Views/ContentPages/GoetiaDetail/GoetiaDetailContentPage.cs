@@ -1,7 +1,9 @@
 ﻿using System;
 using GoetiaGuide.Core.Common;
+using GoetiaGuide.Core.Components.Templates.DataTemplates;
 using GoetiaGuide.Core.ViewModels;
 using GoetiaGuide.Core.Views.Base;
+using GoetiaGuide.Core.Views.ContentPages.GoetiaDetail.Views;
 using GoetiaGuide.Core.Views.ContentViews;
 using Xamarin.Forms;
 
@@ -37,15 +39,33 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                 if (_Image == null) {
                     _Image = new Image {
                         Aspect = Aspect.AspectFit,
-                        WidthRequest = 300,
                         HeightRequest = 300,
-                        Source = "test",
+                        Source = "https://media.sandhills.com/img.axd?id=4069760217&wid=auctiontime&rwl=False&p=&ext=&w=639&h=480&t=&lp=MAT&c=True&wt=False&sz=Max&rt=0&checksum=G57lKREwooRb1XpA9q9GkSea1D0RnA9ph3k5g5tmg7qgf%2fVZcnmmpEIXsy4b1yi%2fUX3eIHcifFxhdwjZaPJzzFnf%2bGQB1LqU8liGkR0w0Z6kqrXDETjieTMfE05C2ERzsOf0wAjF9uNdJ7I49e1k3A%2bD7%2fd1UmRu",
                         Margin = new Thickness(0, 30, 0, 30),
                         VerticalOptions = LayoutOptions.Center,
-                        HorizontalOptions = LayoutOptions.Center,
+                        HorizontalOptions = LayoutOptions.CenterAndExpand,
                     };
                 }
                 return _Image;
+            }
+        }
+        private ListView _ListView;
+        private ListView ListView {
+            get {
+                if (_ListView == null) {
+                    _ListView = new ListView {
+                        //RowHeight = 60,
+                        BackgroundColor = Color.Transparent,
+                        SeparatorVisibility = SeparatorVisibility.None,
+                        HasUnevenRows = true,
+                        ItemTemplate = new GoetiaDetailDataTemplateSelector {
+                            GoetiaDetailHeaderTemplate = new DataTemplate(typeof(GoetiaDetailHeaderViewCell)),
+                            GoetiaDetailInformationTemplate = new DataTemplate(typeof(GoetiaDetailInformationViewCell))
+                        }
+                    };
+                    //_ListView.ItemTapped += ListView_ItemTapped;
+                }
+                return _ListView;
             }
         }
 
@@ -73,6 +93,9 @@ namespace GoetiaGuide.Core.Views.ContentPages {
             this.Title = "Details";
             AbsoluteLayout layout = new AbsoluteLayout();
 
+            // contentStack
+            ContentStackLayout.Children.Add(Image);
+            ContentStackLayout.Children.Add(ListView);
 
             // scrollview
             this.ScrollViewContent.Content = this.ContentStackLayout;
@@ -83,15 +106,19 @@ namespace GoetiaGuide.Core.Views.ContentPages {
             AbsoluteLayout.SetLayoutFlags(CustomActivityIndicator, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(CustomActivityIndicator, new Rectangle(0, 0, 1, 1));
             layout.Children.Add(CustomActivityIndicator);
-            this.CustomActivityIndicator.IsRunning = true;
-
 
             this.Content = layout;
         }
 
         private void LoadGoetiaDetail() {
+
+            this.CustomActivityIndicator.IsRunning = true;
             this.ViewModel.GetItemDetails();
-            Console.WriteLine(ViewModel.Goetia.Name);
+
+            // ListView Logic
+
+            ListView.ItemsSource = ViewModel.ListViewModels;
+
             if (CustomActivityIndicator.IsRunning) { CustomActivityIndicator.IsRunning = false; }
         }
         #endregion

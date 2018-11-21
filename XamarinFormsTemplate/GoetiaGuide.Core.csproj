@@ -23,6 +23,10 @@
     <Folder Include="Network\" />
     <Folder Include="Network\AWS\" />
     <Folder Include="Views\ViewCells\" />
+    <Folder Include="Views\ContentPages\GoetiaDetail\" />
+    <Folder Include="Components\Templates\" />
+    <Folder Include="Components\Templates\DataTemplates\" />
+    <Folder Include="Views\ContentPages\GoetiaDetail\Views\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Network\BaseAPI.cs" />
