@@ -1,10 +1,9 @@
 ﻿using System;
 using GoetiaGuide.Core.Common;
-using GoetiaGuide.Core.Components.Templates.DataTemplates;
 using GoetiaGuide.Core.ViewModels;
 using GoetiaGuide.Core.Views.Base;
-using GoetiaGuide.Core.Views.ContentPages.GoetiaDetail.Views;
 using GoetiaGuide.Core.Views.ContentViews;
+using Rg.Plugins.Popup.Extensions;
 using Xamarin.Forms;
 
 namespace GoetiaGuide.Core.Views.ContentPages {
@@ -26,7 +25,8 @@ namespace GoetiaGuide.Core.Views.ContentPages {
             get {
                 if (_ContentStackLayout == null) {
                     _ContentStackLayout = new StackLayout {
-                        Orientation = StackOrientation.Vertical
+                        Orientation = StackOrientation.Vertical,
+                        Padding = new Thickness(0, 0, 0, 10)
                     };
                 }
                 return _ContentStackLayout;
@@ -49,23 +49,58 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                 return _Image;
             }
         }
-        private ListView _ListView;
-        private ListView ListView {
+      
+
+        private StackLayout StackLayoutHeader = new StackLayout {
+            BackgroundColor = Color.BlueViolet
+        };
+        private Label _LabelHeader;
+        private Label LabelHeader {
             get {
-                if (_ListView == null) {
-                    _ListView = new ListView {
-                        //RowHeight = 60,
-                        BackgroundColor = Color.Transparent,
-                        SeparatorVisibility = SeparatorVisibility.None,
-                        HasUnevenRows = true,
-                        ItemTemplate = new GoetiaDetailDataTemplateSelector {
-                            GoetiaDetailHeaderTemplate = new DataTemplate(typeof(GoetiaDetailHeaderViewCell)),
-                            GoetiaDetailInformationTemplate = new DataTemplate(typeof(GoetiaDetailInformationViewCell))
-                        }
+                if (_LabelHeader == null) {
+                    _LabelHeader = new Label {
+                        FontSize = 22,
+                        FontAttributes = FontAttributes.Bold,
+                        TextColor = Color.White,
+                        Margin = new Thickness(10, 0, 0, 10)
                     };
-                    //_ListView.ItemTapped += ListView_ItemTapped;
                 }
-                return _ListView;
+                return _LabelHeader;
+            }
+        }
+
+        private Label _LabelDescription;
+        private Label LabelDescription {
+            get {
+                if (_LabelDescription == null) {
+                    _LabelDescription = new Label {
+                        FontSize = 16,
+                        TextColor = Color.White,
+                        LineBreakMode = LineBreakMode.TailTruncation,
+                        MaxLines = 4,
+                        Margin = new Thickness(10, 0, 0, 10)
+                    };
+                }
+                return _LabelDescription;
+            }
+        }
+        private Label _LabelFullDescription;
+        private Label LabelFullDescription {
+            get {
+                if (_LabelFullDescription == null) {
+                    _LabelFullDescription = new Label {
+                        Text = "Click for full description",
+                        FontSize = 16,
+                        TextColor = Color.DarkBlue,
+                        MaxLines = 4,
+                        Margin = new Thickness(10, 0, 0, 20)
+                    };
+                    var gestureRecognizer = new TapGestureRecognizer();
+                    gestureRecognizer.Tapped += LabelFullDescription_Tapped;
+                    _LabelFullDescription.GestureRecognizers.Add(gestureRecognizer);
+
+                }
+                return _LabelFullDescription;
             }
         }
 
@@ -93,9 +128,12 @@ namespace GoetiaGuide.Core.Views.ContentPages {
             this.Title = "Details";
             AbsoluteLayout layout = new AbsoluteLayout();
 
+            // header
+            StackLayoutHeader.Children.Add(LabelHeader);
+
             // contentStack
             ContentStackLayout.Children.Add(Image);
-            ContentStackLayout.Children.Add(ListView);
+            ContentStackLayout.Children.Add(StackLayoutHeader);
 
             // scrollview
             this.ScrollViewContent.Content = this.ContentStackLayout;
@@ -106,20 +144,34 @@ namespace GoetiaGuide.Core.Views.ContentPages {
             AbsoluteLayout.SetLayoutFlags(CustomActivityIndicator, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(CustomActivityIndicator, new Rectangle(0, 0, 1, 1));
             layout.Children.Add(CustomActivityIndicator);
+            this.CustomActivityIndicator.IsRunning = true;
 
             this.Content = layout;
         }
 
+        private void LabelFullDescription_Tapped(object sender, EventArgs args) {
+            var popupPage = new LabelButtonPopupPage("Full Description", ViewModel.GoetiaItem.Description, "Close");
+            //popupPage.PageDelegate = this;
+            Navigation.PushPopupAsync(popupPage);
+        }
         private void LoadGoetiaDetail() {
 
-            this.CustomActivityIndicator.IsRunning = true;
             this.ViewModel.GetItemDetails();
+            // TODO: update the getItemDetails method to return bool
+            if (ViewModel.GoetiaItem != null) {
+                // Header
+                StackLayoutHeader.Children.Add(LabelDescription);
+                LabelHeader.Text = ViewModel.GoetiaItem.Name;
+                LabelDescription.Text = ViewModel.GoetiaItem.Description;
+                StackLayoutHeader.Children.Add(LabelFullDescription);
 
-            // ListView Logic
+                // update contentStackLayout
+                foreach (GoetiaDetailInformationViewModel informationVM in ViewModel.ListViewModels) {
+                    ContentStackLayout.Children.Add(new HorizontalLabelDetailContentView(informationVM.Title, informationVM.Info));
+                }
+            }
+            CustomActivityIndicator.IsRunning = false;
 
-            ListView.ItemsSource = ViewModel.ListViewModels;
-
-            if (CustomActivityIndicator.IsRunning) { CustomActivityIndicator.IsRunning = false; }
         }
         #endregion
 

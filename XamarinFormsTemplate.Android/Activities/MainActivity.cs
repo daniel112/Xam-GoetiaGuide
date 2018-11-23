@@ -26,9 +26,15 @@ namespace GoetiaGuide.Droid {
             loggingConfig.LogMetricsFormat = LogMetricsFormatOption.JSON;
             loggingConfig.LogTo = LoggingOptions.SystemDiagnostics;
 
+            Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: true);
 
             LoadApplication(new App());
+        }
+
+        public override void OnBackPressed() {
+            Rg.Plugins.Popup.Popup.SendBackPressed(base.OnBackPressed);
+
         }
     }
 }

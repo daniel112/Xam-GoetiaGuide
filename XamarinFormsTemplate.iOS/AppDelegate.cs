@@ -30,6 +30,7 @@ namespace GoetiaGuide.iOS {
             loggingConfig.LogMetricsFormat = LogMetricsFormatOption.JSON;
             loggingConfig.LogTo = LoggingOptions.SystemDiagnostics;
 
+            Rg.Plugins.Popup.Popup.Init();
 
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
 

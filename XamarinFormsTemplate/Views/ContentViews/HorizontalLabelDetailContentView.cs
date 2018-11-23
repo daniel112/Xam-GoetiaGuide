@@ -11,7 +11,7 @@ namespace GoetiaGuide.Core.Views.ContentViews {
             }
             set {
                 LabelTitle.TextColor = value;
-                LabelDetail.TextColor = value;
+                LabelInfo.TextColor = value;
             }
         }
 
@@ -20,34 +20,30 @@ namespace GoetiaGuide.Core.Views.ContentViews {
             get {
                 if (_LabelTitle == null) {
                     _LabelTitle = new Label {
-                        FontSize = 18,
                         TextColor = Color.White,
+                        FontSize = 16,
                         FontAttributes = FontAttributes.Bold,
-                        LineBreakMode = LineBreakMode.WordWrap,
-                        HorizontalOptions = LayoutOptions.Center,
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        VerticalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.CenterAndExpand,
+                        Margin = new Thickness(10, 0, 0, 0)
+
                     };
                 }
-
                 return _LabelTitle;
             }
         }
-        private Label _LabelDetail;
-        private Label LabelDetail {
+        private Label _LabelInfo;
+        private Label LabelInfo {
             get {
-                if (_LabelDetail == null) {
-                    _LabelDetail = new Label {
-                        FontSize = 18,
+                if (_LabelInfo == null) {
+                    _LabelInfo = new Label {
                         TextColor = Color.White,
-                        LineBreakMode = LineBreakMode.WordWrap,
-                        HorizontalOptions = LayoutOptions.Center,
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        VerticalOptions = LayoutOptions.Center,
+                        FontSize = 16,
+                        VerticalOptions = LayoutOptions.CenterAndExpand,
+                        LineBreakMode = LineBreakMode.WordWrap
+                        //Margin = new Thickness(10, 0,0,0)
                     };
                 }
-
-                return _LabelDetail;
+                return _LabelInfo;
             }
         }
         private StackLayout _ContentStackLayout;
@@ -69,7 +65,7 @@ namespace GoetiaGuide.Core.Views.ContentViews {
         }
         public HorizontalLabelDetailContentView(string title, string detail) {
             this.LabelTitle.Text = title;
-            this.LabelDetail.Text = detail;
+            this.LabelInfo.Text = detail;
             this.Setup();
         }
         #endregion
@@ -80,7 +76,7 @@ namespace GoetiaGuide.Core.Views.ContentViews {
 
             // horizontal stack
             this.ContentStackLayout.Children.Add(this.LabelTitle);
-            this.ContentStackLayout.Children.Add(this.LabelDetail);
+            this.ContentStackLayout.Children.Add(this.LabelInfo);
 
 
             this.Content = this.ContentStackLayout;
