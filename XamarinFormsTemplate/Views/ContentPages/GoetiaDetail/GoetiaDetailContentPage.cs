@@ -1,5 +1,6 @@
 ﻿using System;
 using GoetiaGuide.Core.Common;
+using GoetiaGuide.Core.Components;
 using GoetiaGuide.Core.ViewModels;
 using GoetiaGuide.Core.Views.Base;
 using GoetiaGuide.Core.Views.ContentViews;
@@ -7,7 +8,7 @@ using Rg.Plugins.Popup.Extensions;
 using Xamarin.Forms;
 
 namespace GoetiaGuide.Core.Views.ContentPages {
-    public class GoetiaDetailContentPage : BaseContentPage<GoetiaDetailViewModel> {
+    public class GoetiaDetailContentPage : BaseContentPage<GoetiaDetailViewModel>, ILabelButtonPopupPage {
 
         #region Variables
 
@@ -26,7 +27,9 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                 if (_ContentStackLayout == null) {
                     _ContentStackLayout = new StackLayout {
                         Orientation = StackOrientation.Vertical,
-                        Padding = new Thickness(0, 0, 0, 10)
+                        Margin = new Thickness(0, 0, 0, 10),
+                        HorizontalOptions = LayoutOptions.FillAndExpand,
+                        Spacing = 0
                     };
                 }
                 return _ContentStackLayout;
@@ -40,7 +43,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                     _Image = new Image {
                         Aspect = Aspect.AspectFit,
                         HeightRequest = 300,
-                        Source = "https://media.sandhills.com/img.axd?id=4069760217&wid=auctiontime&rwl=False&p=&ext=&w=639&h=480&t=&lp=MAT&c=True&wt=False&sz=Max&rt=0&checksum=G57lKREwooRb1XpA9q9GkSea1D0RnA9ph3k5g5tmg7qgf%2fVZcnmmpEIXsy4b1yi%2fUX3eIHcifFxhdwjZaPJzzFnf%2bGQB1LqU8liGkR0w0Z6kqrXDETjieTMfE05C2ERzsOf0wAjF9uNdJ7I49e1k3A%2bD7%2fd1UmRu",
+                        Source = "https://s3.us-east-2.amazonaws.com/goetia-images/image1.png",
                         Margin = new Thickness(0, 30, 0, 30),
                         VerticalOptions = LayoutOptions.Center,
                         HorizontalOptions = LayoutOptions.CenterAndExpand,
@@ -49,10 +52,10 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                 return _Image;
             }
         }
-      
 
-        private StackLayout StackLayoutHeader = new StackLayout {
-            BackgroundColor = Color.BlueViolet
+
+        private readonly StackLayout StackLayoutHeader = new StackLayout {
+            BackgroundColor = Color.FromHex(AppTheme.SecondaryColor())
         };
         private Label _LabelHeader;
         private Label LabelHeader {
@@ -62,7 +65,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                         FontSize = 22,
                         FontAttributes = FontAttributes.Bold,
                         TextColor = Color.White,
-                        Margin = new Thickness(10, 0, 0, 10)
+                        Margin = new Thickness(10, 10, 0, 10)
                     };
                 }
                 return _LabelHeader;
@@ -89,11 +92,12 @@ namespace GoetiaGuide.Core.Views.ContentPages {
             get {
                 if (_LabelFullDescription == null) {
                     _LabelFullDescription = new Label {
+                        HorizontalOptions = LayoutOptions.FillAndExpand,
                         Text = "Click for full description",
                         FontSize = 16,
-                        TextColor = Color.DarkBlue,
+                        TextColor = Color.FromHex("#215bb7"),
                         MaxLines = 4,
-                        Margin = new Thickness(10, 0, 0, 20)
+                        Margin = new Thickness(10, 0, 0, 10)
                     };
                     var gestureRecognizer = new TapGestureRecognizer();
                     gestureRecognizer.Tapped += LabelFullDescription_Tapped;
@@ -110,14 +114,24 @@ namespace GoetiaGuide.Core.Views.ContentPages {
 
         #region Initialization
         public GoetiaDetailContentPage(int id) {
+
+
             this.Setup();
             ViewModel.ID = id;
         }
         protected override void OnAppearing() {
             base.OnAppearing();
-            this.LoadGoetiaDetail();
+            // messaging center
+            MessagingCenter.Instance.Subscribe<GoetiaDetailViewModel>(this, MessagingCenterKeys.RetreivedDetailItem, (sender) => {
+                Device.BeginInvokeOnMainThread(UpdateViewAsync);
+            });
         }
 
+        protected override void OnDisappearing() {
+            base.OnDisappearing();
+            MessagingCenter.Instance.Unsubscribe<GoetiaDetailViewModel>(this, MessagingCenterKeys.RetreivedDetailItem);
+
+        }
         protected override void OnOrientationUpdate(DeviceOrientatione orientation) {
         }
         #endregion
@@ -127,13 +141,6 @@ namespace GoetiaGuide.Core.Views.ContentPages {
 
             this.Title = "Details";
             AbsoluteLayout layout = new AbsoluteLayout();
-
-            // header
-            StackLayoutHeader.Children.Add(LabelHeader);
-
-            // contentStack
-            ContentStackLayout.Children.Add(Image);
-            ContentStackLayout.Children.Add(StackLayoutHeader);
 
             // scrollview
             this.ScrollViewContent.Content = this.ContentStackLayout;
@@ -150,29 +157,49 @@ namespace GoetiaGuide.Core.Views.ContentPages {
         }
 
         private void LabelFullDescription_Tapped(object sender, EventArgs args) {
-            var popupPage = new LabelButtonPopupPage("Full Description", ViewModel.GoetiaItem.Description, "Close");
-            //popupPage.PageDelegate = this;
+            var popupPage = new LabelButtonPopupPage("Description", ViewModel.GoetiaItem.Description, "Close", null);
             Navigation.PushPopupAsync(popupPage);
         }
-        private void LoadGoetiaDetail() {
+        private async void UpdateViewAsync() {
+        
+            if (ViewModel.GoetiaItem != null && ViewModel.GoetiaItem.Success) {
 
-            this.ViewModel.GetItemDetails();
-            // TODO: update the getItemDetails method to return bool
-            if (ViewModel.GoetiaItem != null) {
-                // Header
+                // header
+                StackLayoutHeader.Children.Add(LabelHeader);
                 StackLayoutHeader.Children.Add(LabelDescription);
                 LabelHeader.Text = ViewModel.GoetiaItem.Name;
                 LabelDescription.Text = ViewModel.GoetiaItem.Description;
                 StackLayoutHeader.Children.Add(LabelFullDescription);
 
-                // update contentStackLayout
+                // contentStack
+                var headerViewSeparatorBottom = new BoxView { BackgroundColor = Color.FromHex(AppTheme.SeparatorColor()).MultiplyAlpha(0.5f), HeightRequest = 10, };
+                ContentStackLayout.Children.Add(Image);
+                ContentStackLayout.Children.Add(StackLayoutHeader);
+                ContentStackLayout.Children.Add(headerViewSeparatorBottom);
+
+                // info stackLayout
+                var stackLayoutInfo = new StackLayout {
+                    BackgroundColor = Color.FromHex("#400000"),
+                    Spacing = 0,
+                    VerticalOptions = LayoutOptions.FillAndExpand
+                };
                 foreach (GoetiaDetailInformationViewModel informationVM in ViewModel.ListViewModels) {
-                    ContentStackLayout.Children.Add(new HorizontalLabelDetailContentView(informationVM.Title, informationVM.Info));
+                    stackLayoutInfo.Children.Add(new HorizontalLabelDetailContentView(informationVM.Title, informationVM.Info));
                 }
+                ContentStackLayout.Children.Add(stackLayoutInfo);
+
+            } else {
+                // network error
+                var popupPage = new LabelButtonPopupPage("Error", "Something went wrong, please try again later.", "Close", 100) {
+                    PageDelegate = this
+                };
+                await Navigation.PushPopupAsync(popupPage);
             }
             CustomActivityIndicator.IsRunning = false;
 
         }
+
+
         #endregion
 
         #region Public API
@@ -180,7 +207,11 @@ namespace GoetiaGuide.Core.Views.ContentPages {
         #endregion
 
         #region Delegates
-
+        void ILabelButtonPopupPage.DidTapButton(string messageTitle) {
+            if (messageTitle.ToLower() == "error") {
+                Navigation.PopAsync();
+            }
+        }
         #endregion
 
     }

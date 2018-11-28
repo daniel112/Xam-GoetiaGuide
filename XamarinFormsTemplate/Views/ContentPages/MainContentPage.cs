@@ -28,7 +28,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                         Text = "Search",
                         FontSize = 16,
                         TextColor = Color.White,
-                        BackgroundColor = Color.FromHex("#7f1808"),
+                        BackgroundColor = Color.FromHex(AppTheme.PrimaryButtonColor()),
                         CornerRadius = 8,
                         HeightRequest = 40,
                         Margin = new Thickness(30, 30, 30, 0)
@@ -51,7 +51,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                         Text = "Feeling Lucky?",
                         FontSize = 16,
                         TextColor = Color.White,
-                        BackgroundColor = Color.FromHex("#7f1808"),
+                        BackgroundColor = Color.FromHex(AppTheme.PrimaryButtonColor()),
                         CornerRadius = 8,
                         HeightRequest = 40,
                         Margin = new Thickness(30, 10, 30, 0)

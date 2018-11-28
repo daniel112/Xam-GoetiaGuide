@@ -18,7 +18,7 @@ namespace GoetiaGuide.Views {
                     _DismissButton = new Button {
                         Text = "START",
                         TextColor = Color.White,
-                        BackgroundColor = Color.FromHex("89211b"),
+                        BackgroundColor = Color.FromHex(AppTheme.PrimaryButtonColor()),
                         HorizontalOptions = LayoutOptions.FillAndExpand,
                         CornerRadius = 0,
                     };
@@ -118,7 +118,7 @@ namespace GoetiaGuide.Views {
 
         #region Private API
         private void Setup() {
-            this.BackgroundColor = Color.FromHex(AppTheme.DefaultBarBackgroundColor());
+            this.BackgroundColor = Color.FromHex(AppTheme.DefaultBackgroundColor());
             AbsoluteLayout layout = new AbsoluteLayout();
 
             // background image

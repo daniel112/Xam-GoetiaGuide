@@ -20,4 +20,8 @@ namespace GoetiaGuide.Core.Components {
         public const HttpStatusCode BUCKET_REDIRECT_STATUS_CODE = HttpStatusCode.Redirect;
 
     }
+
+    public static class MessagingCenterKeys {
+        public const string RetreivedDetailItem = "RetreivedDetailItem";
+    }
 }

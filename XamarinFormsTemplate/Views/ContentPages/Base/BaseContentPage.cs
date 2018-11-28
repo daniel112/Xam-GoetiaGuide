@@ -17,7 +17,7 @@ namespace GoetiaGuide.Core.Views.Base {
 
         #region Initialization
         protected BaseContentPage() {
-            this.BackgroundColor = Color.FromHex(AppTheme.DefaultBarBackgroundColor());
+            this.BackgroundColor = Color.FromHex(AppTheme.DefaultBackgroundColor());
             BindingContext = ViewModel;
         }
 

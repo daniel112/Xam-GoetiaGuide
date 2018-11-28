@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using GoetiaGuide.Core.Common;
 using Rg.Plugins.Popup.Extensions;
 using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms;
@@ -7,7 +8,7 @@ using Xamarin.Forms;
 namespace GoetiaGuide.Core.Views {
 
     public interface ILabelButtonPopupPage {
-        void DidTapButton();
+        void DidTapButton(string messageTitle);
     }
 
     public class LabelButtonPopupPage : PopupPage {
@@ -21,7 +22,7 @@ namespace GoetiaGuide.Core.Views {
                     _FlexLayoutWrapper = new StackLayout {
                         HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Center,
-                        BackgroundColor = Color.Black,
+                        BackgroundColor = Color.FromHex(AppTheme.DefaultBackgroundColor()),
                         WidthRequest = 300
                     };
                 }
@@ -41,11 +42,24 @@ namespace GoetiaGuide.Core.Views {
                         FontSize = 20,
                         FontAttributes = FontAttributes.Bold,
                         HeightRequest = 40,
-                        BackgroundColor = Color.Black,
+                        BackgroundColor = Color.FromHex("#800000"),
                         TextColor = Color.White
                     };
                 }
                 return _LabelTitle;
+            }
+        }
+
+        private ScrollView _ScrollViewMessage;
+        private ScrollView ScrollViewMessage {
+            get {
+                if (_ScrollViewMessage == null) {
+                    _ScrollViewMessage = new ScrollView {
+                        VerticalOptions = LayoutOptions.FillAndExpand,
+                        BackgroundColor = Color.Transparent
+                    };
+                }
+                return _ScrollViewMessage;
             }
         }
 
@@ -61,7 +75,6 @@ namespace GoetiaGuide.Core.Views {
                         LineBreakMode = LineBreakMode.WordWrap,
                         Text = "Message placeholder",
                         FontSize = 15,
-                        HeightRequest = 150,
                         TextColor = Color.White,
                         BackgroundColor = Color.Transparent,
                         Margin = new Thickness(10)
@@ -78,7 +91,7 @@ namespace GoetiaGuide.Core.Views {
                     _ButtonAction = new Button {
                         Text = "Action Button",
                         HorizontalOptions = LayoutOptions.FillAndExpand,
-                        BackgroundColor = Color.Black,
+                        BackgroundColor = Color.FromHex(AppTheme.SecondaryColor()),
                         TextColor = Color.White,
                         FontAttributes = FontAttributes.Bold,
                         FontSize = 18,
@@ -98,10 +111,11 @@ namespace GoetiaGuide.Core.Views {
             SetupContent();
         }
 
-        public LabelButtonPopupPage(string title, string message, string buttonText) {
+        public LabelButtonPopupPage(string title, string message, string buttonText, int? messageHeightLimit) {
             LabelTitle.Text = title;
             LabelMessage.Text = message;
             ButtonAction.Text = buttonText;
+            ScrollViewMessage.HeightRequest = messageHeightLimit != null ? (double)messageHeightLimit : 200;
             SetupContent();
         }
 
@@ -137,8 +151,11 @@ namespace GoetiaGuide.Core.Views {
         #region Private API
         private void SetupContent() {
 
+            // scrollview
+            ScrollViewMessage.Content = LabelMessage;
+
             FlexLayoutWrapper.Children.Add(LabelTitle);
-            FlexLayoutWrapper.Children.Add(LabelMessage);
+            FlexLayoutWrapper.Children.Add(ScrollViewMessage);
             FlexLayoutWrapper.Children.Add(ButtonAction);
 
             this.Content = FlexLayoutWrapper;
@@ -151,7 +168,8 @@ namespace GoetiaGuide.Core.Views {
         // UIResponder
         private void ButtonAction_Clicked(object sender, EventArgs e) {
             ClosePopupAsync();
-            //PageDelegate.DidTapButton();
+            if (PageDelegate != null)
+                PageDelegate.DidTapButton(LabelTitle.Text);
         }
 
         #endregion
