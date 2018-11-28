@@ -16,7 +16,7 @@
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -111,10 +111,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\background_main.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\background_disclaimer.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\background_main.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\background_disclaimer.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\background_main.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\background_disclaimer.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\background_main.png" />
     <AndroidResource Include="Resources\drawable-hdpi\arrow_right.png" />
     <AndroidResource Include="Resources\drawable\arrow_right.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\arrow_right.png" />
