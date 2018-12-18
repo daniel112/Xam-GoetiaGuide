@@ -209,7 +209,8 @@ namespace GoetiaGuide.Core.Views.ContentPages {
         }
 
         private void ButtonSearch_Clicked(object sender, EventArgs e) {
-            Navigation.PushAsync(new GoetiaListContentPage());
+            DisplayAlert("TBD", $"Not yet implemented", "Ok");
+            //Navigation.PushAsync(new GoetiaListContentPage());
         }
 
 

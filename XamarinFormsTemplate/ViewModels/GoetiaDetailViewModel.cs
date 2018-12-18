@@ -59,7 +59,7 @@ namespace GoetiaGuide.Core.ViewModels {
         #region Public API
         public Task GetItemDetailAsync() {
             return Task.Run(async () => {
-                GoetiaItem = await APIManager.GetByNameAsync("Belial");
+                GoetiaItem = await APIManager.GetByIDAsync(ID);
 
                 // update the list viewmodel
                 Type type = GoetiaItem.GetType();

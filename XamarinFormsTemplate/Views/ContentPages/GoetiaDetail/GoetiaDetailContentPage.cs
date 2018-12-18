@@ -43,7 +43,6 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                     _Image = new Image {
                         Aspect = Aspect.AspectFit,
                         HeightRequest = 300,
-                        Source = "https://s3.us-east-2.amazonaws.com/goetia-images/image1.png",
                         Margin = new Thickness(0, 30, 0, 30),
                         VerticalOptions = LayoutOptions.Center,
                         HorizontalOptions = LayoutOptions.CenterAndExpand,
@@ -114,17 +113,17 @@ namespace GoetiaGuide.Core.Views.ContentPages {
 
         #region Initialization
         public GoetiaDetailContentPage(int id) {
-
-
-            this.Setup();
-            ViewModel.ID = id;
-        }
-        protected override void OnAppearing() {
-            base.OnAppearing();
             // messaging center
             MessagingCenter.Instance.Subscribe<GoetiaDetailViewModel>(this, MessagingCenterKeys.RetreivedDetailItem, (sender) => {
                 Device.BeginInvokeOnMainThread(UpdateViewAsync);
             });
+            this.Setup();
+            ViewModel.ID = id;
+        }
+
+        protected override void OnAppearing() {
+            base.OnAppearing();
+
         }
 
         protected override void OnDisappearing() {
@@ -163,6 +162,9 @@ namespace GoetiaGuide.Core.Views.ContentPages {
         private async void UpdateViewAsync() {
         
             if (ViewModel.GoetiaItem != null && ViewModel.GoetiaItem.Success) {
+
+                // Image
+                this.Image.Source = ViewModel.GoetiaItem.ImageURL;
 
                 // header
                 StackLayoutHeader.Children.Add(LabelHeader);

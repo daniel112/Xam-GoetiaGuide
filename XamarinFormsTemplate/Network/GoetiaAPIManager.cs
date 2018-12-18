@@ -75,6 +75,33 @@ namespace GoetiaGuide.Core.Network {
             return goetia;
         }
 
+        public async Task<Goetia> GetByIDAsync(int id) {
+
+            // TODO: update to send error message back
+            Goetia goetia = new Goetia();
+            try {
+                List<ScanCondition> conditions = new List<ScanCondition> {
+                    new ScanCondition(nameof(Goetia.ID), ScanOperator.Equal, id)
+                };
+
+                var results = await _Context.ScanAsync<Goetia>(conditions).GetRemainingAsync();
+                goetia = results.FirstOrDefault();
+                goetia.Success = true;
+            } catch (AmazonDynamoDBException e) {
+                Console.WriteLine(e.Message);
+                goetia.Success = false;
+            } catch (AmazonServiceException e) {
+                Console.WriteLine(e.Message);
+                goetia.Success = false;
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+                goetia.Success = false;
+                goetia.Message = e.Message;
+            }
+
+            return goetia;
+        }
+
         public void testImage() {
 
             // Issue request and remember to dispose of the response

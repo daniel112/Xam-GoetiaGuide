@@ -15,7 +15,6 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <NuGetPackageImportStamp>
@@ -104,7 +103,6 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_round.png" />
     <AndroidResource Include="Resources\drawable\SplashScreen.xml" />
     <AndroidResource Include="Resources\drawable\splash_logo.png" />
-    <AndroidResource Include="Resources\drawable\icon_pentagram.png" />
     <AndroidResource Include="Resources\drawable\background_main.png" />
     <AndroidResource Include="Resources\drawable\background_disclaimer.png" />
     <AndroidResource Include="Resources\drawable-hdpi\background_disclaimer.png" />
@@ -116,6 +114,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\arrow_right.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\arrow_right.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\arrow_right.png" />
+    <AndroidResource Include="Resources\drawable\icon_pentagram.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
