@@ -12,6 +12,7 @@ using FFImageLoading.Forms;
 using FFImageLoading.Work;
 using FFImageLoading.Transformations;
 using GoetiaGuide.Core.Components;
+using System.Linq;
 
 namespace GoetiaGuide.Core.Views.ContentPages {
     public class MainContentPage : BaseContentPage<MainViewModel>, IInputTextDelegate {
@@ -35,7 +36,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
 
                     };
                     _ButtonSearch.SetDynamicResource(StyleProperty, ApplicationResourcesConstants.CustomFontFamily);
-                    _ButtonSearch.Clicked += ButtonSearch_Clicked;
+                    _ButtonSearch.Clicked += ButtonSearch_ClickedAsync;
 
 
                 }
@@ -158,6 +159,9 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                 return _StackLayout;
             }
         }
+
+        private readonly DimActivityIndicatorContentView CustomActivityIndicator = new DimActivityIndicatorContentView();
+
         #endregion
 
         #region Initialization
@@ -196,7 +200,28 @@ namespace GoetiaGuide.Core.Views.ContentPages {
             AbsoluteLayout.SetLayoutBounds(this.ScrollViewContent, new Rectangle(0, 0, 1, 1));
             layout.Children.Add(this.ScrollViewContent);
 
+
+            // loading indicator
+            AbsoluteLayout.SetLayoutFlags(CustomActivityIndicator, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(CustomActivityIndicator, new Rectangle(0, 0, 1, 1));
+            layout.Children.Add(CustomActivityIndicator);
+
             Content = layout;
+
+        }
+
+        private async void PerformSearch() {
+            this.CustomActivityIndicator.IsRunning = true;
+            var results = await ViewModel.SearchWithText(ViewModel.SearchText);
+            if (results.Count == 1) {
+                GoetiaDetailContentPage destinationCP = new GoetiaDetailContentPage(results.FirstOrDefault());
+                await this.Navigation.PushAsync(destinationCP);
+            } else if (results.Count > 1) {
+                //Navigation.PushAsync(new GoetiaListContentPage());
+            } else {
+                Console.WriteLine("RESULTS DOESNT EXIST");
+            }
+            this.CustomActivityIndicator.IsRunning = false;
 
         }
 
@@ -208,9 +233,8 @@ namespace GoetiaGuide.Core.Views.ContentPages {
 
         }
 
-        private void ButtonSearch_Clicked(object sender, EventArgs e) {
-            DisplayAlert("TBD", $"Not yet implemented", "Ok");
-            //Navigation.PushAsync(new GoetiaListContentPage());
+        private void ButtonSearch_ClickedAsync(object sender, EventArgs e) {
+            PerformSearch();
         }
 
 
@@ -223,9 +247,11 @@ namespace GoetiaGuide.Core.Views.ContentPages {
 
         #region Delegates
         public void Input_TextChanged(string text, InputTextContentView inputText) {
+            ViewModel.SearchText = text;
         }
 
-        public void Input_DidPressReturn(string text, InputTextContentView inputText) {
+        public void Input_DidPressReturnAsync(string text, InputTextContentView inputText) {
+            PerformSearch();
         }
         #endregion
     }

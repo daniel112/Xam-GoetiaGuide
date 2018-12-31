@@ -8,7 +8,7 @@ namespace GoetiaGuide.Core.Views.ContentViews {
 
     public interface IInputTextDelegate {
         void Input_TextChanged(string text, InputTextContentView inputText);
-        void Input_DidPressReturn(string text, InputTextContentView inputText);
+        void Input_DidPressReturnAsync(string text, InputTextContentView inputText);
 
     }
     public class InputTextContentView : ContentView {
@@ -187,7 +187,7 @@ namespace GoetiaGuide.Core.Views.ContentViews {
         }
         void EntryItem_Completed(object sender, EventArgs e) {
             EntryBorderless entry = (EntryBorderless)sender;
-            this.Delegate.Input_DidPressReturn(entry.Text, this);
+            this.Delegate.Input_DidPressReturnAsync(entry.Text, this);
 
         }
 

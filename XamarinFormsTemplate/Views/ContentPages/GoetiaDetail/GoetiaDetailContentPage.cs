@@ -1,6 +1,7 @@
 ﻿using System;
 using GoetiaGuide.Core.Common;
 using GoetiaGuide.Core.Components;
+using GoetiaGuide.Core.Models;
 using GoetiaGuide.Core.ViewModels;
 using GoetiaGuide.Core.Views.Base;
 using GoetiaGuide.Core.Views.ContentViews;
@@ -112,6 +113,13 @@ namespace GoetiaGuide.Core.Views.ContentPages {
         #endregion
 
         #region Initialization
+        public GoetiaDetailContentPage(Goetia goetia) {
+            ViewModel.GoetiaItem = goetia;
+            this.Setup();
+            UpdateViewAsync();
+        }
+
+
         public GoetiaDetailContentPage(int id) {
             // messaging center
             MessagingCenter.Instance.Subscribe<GoetiaDetailViewModel>(this, MessagingCenterKeys.RetreivedDetailItem, (sender) => {
@@ -160,7 +168,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
             Navigation.PushPopupAsync(popupPage);
         }
         private async void UpdateViewAsync() {
-        
+
             if (ViewModel.GoetiaItem != null && ViewModel.GoetiaItem.Success) {
 
                 // Image

@@ -22,15 +22,25 @@ namespace GoetiaGuide.Core.ViewModels {
     public class GoetiaDetailViewModel : BaseViewModel {
         #region Variables
         private int _ID;
-        public int ID { 
+        public int ID {
             get {
                 return _ID;
-            } set {
+            }
+            set {
                 _ID = value;
                 GetItemDetailAsync();
-            } 
+            }
         }
-        public Goetia GoetiaItem { get; set; }
+        private Goetia _GoetiaItem;
+        public Goetia GoetiaItem {
+            get {
+                return _GoetiaItem;
+            }
+            set {
+                _GoetiaItem = value;
+                ParseItemToListViewmodels(value);
+            }
+        }
 
         private ObservableCollection<object> _ListViewModels;
         public ObservableCollection<object> ListViewModels {
@@ -53,6 +63,41 @@ namespace GoetiaGuide.Core.ViewModels {
         #endregion
 
         #region Private API
+        private void ParseItemToListViewmodels(Goetia item) {
+            // update the list viewmodel
+            Type type = item.GetType();
+            BindingFlags flags = BindingFlags.Public | BindingFlags.Instance;
+            PropertyInfo[] properties = type.GetProperties(flags);
+
+            foreach (PropertyInfo property in properties) {
+                // excluding Keywords, Direction, ImageURL, BaseModel, ID, Name, Description
+                if (property.Name != nameof(Goetia.Keywords) && property.Name != nameof(Goetia.Direction) && property.Name != nameof(Goetia.ImageURL) &&
+                    property.Name != nameof(Goetia.Success) && property.Name != nameof(Goetia.Message) && property.Name != nameof(Goetia.ID) && property.Name != nameof(Goetia.Name)
+                    && property.Name != nameof(Goetia.Description)) {
+
+                    string name = property.Name;
+                    object propertyValue = property.GetValue(GoetiaItem, null);
+                    if (propertyValue != null) {
+                        string info = "";
+                        // we're expecting string or list of string
+                        if (propertyValue is string) {
+                            info = propertyValue as string;
+                            ListViewModels.Add(new GoetiaDetailInformationViewModel($"{name} : ", info));
+
+                        } else if (propertyValue is List<string>) {
+                            List<string> list = propertyValue as List<string>;
+                            if (list.Count > 0) {
+                                for (int i = 0; i < list.Count; i++) {
+                                    info += list[i];
+                                    if (i + 1 < list.Count) info += ", ";
+                                }
+                                ListViewModels.Add(new GoetiaDetailInformationViewModel($"{name} : ", info));
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         #endregion
 
@@ -60,44 +105,10 @@ namespace GoetiaGuide.Core.ViewModels {
         public Task GetItemDetailAsync() {
             return Task.Run(async () => {
                 GoetiaItem = await APIManager.GetByIDAsync(ID);
-
-                // update the list viewmodel
-                Type type = GoetiaItem.GetType();
-                BindingFlags flags = BindingFlags.Public | BindingFlags.Instance;
-                PropertyInfo[] properties = type.GetProperties(flags);
-
-                foreach (PropertyInfo property in properties) {
-                    // excluding Keywords, Direction, ImageURL, BaseModel, ID, Name, Description
-                    if (property.Name != nameof(Goetia.Keywords) && property.Name != nameof(Goetia.Direction) && property.Name != nameof(Goetia.ImageURL) &&
-                        property.Name != nameof(Goetia.Success) && property.Name != nameof(Goetia.Message) && property.Name != nameof(Goetia.ID) && property.Name != nameof(Goetia.Name)
-                        && property.Name != nameof(Goetia.Description)) {
-
-                        string name = property.Name;
-                        object propertyValue = property.GetValue(GoetiaItem, null);
-                        if (propertyValue != null) {
-                            string info = "";
-                            // we're expecting string or list of string
-                            if (propertyValue is string) {
-                                info = propertyValue as string;
-                                ListViewModels.Add(new GoetiaDetailInformationViewModel($"{name} : ", info));
-
-                            } else if (propertyValue is List<string>) {
-                                List<string> list = propertyValue as List<string>;
-                                if (list.Count > 0) {
-                                    for (int i = 0; i < list.Count; i++) {
-                                        info += list[i];
-                                        if (i + 1 < list.Count) info += ", ";
-                                    }
-                                    ListViewModels.Add(new GoetiaDetailInformationViewModel($"{name} : ", info));
-                                }
-                            }
-                        }
-                    }
-                }
                 MessagingCenter.Instance.Send(this, MessagingCenterKeys.RetreivedDetailItem);
             });
         }
-       
+
         #endregion
 
         #region Delegates

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
+using Amazon.DynamoDBv2.Model;
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
@@ -52,7 +53,7 @@ namespace GoetiaGuide.Core.Network {
 
             // TODO: update to send error message back
             Goetia goetia = new Goetia();
-           try {
+            try {
                 List<ScanCondition> conditions = new List<ScanCondition> {
                     new ScanCondition(nameof(Goetia.Name), ScanOperator.Equal, name)
                 };
@@ -102,6 +103,73 @@ namespace GoetiaGuide.Core.Network {
             return goetia;
         }
 
+        public async Task<List<Goetia>> PerformSearchQuery(string searchValue) {
+
+            List<Goetia> goetias = new List<Goetia>();
+            try {
+                List<ScanCondition> conditions = new List<ScanCondition> {
+                    new ScanCondition(nameof(Goetia.Keywords), ScanOperator.Contains, searchValue),
+                };
+                // search in Keywords col
+                var results = await _Context.ScanAsync<Goetia>(conditions).GetRemainingAsync();
+
+                // search in name col
+                if (results.Count == 0) {
+                    conditions = new List<ScanCondition> {
+                    new ScanCondition(nameof(Goetia.Keywords), ScanOperator.Contains, searchValue),
+                };
+                    results = await _Context.ScanAsync<Goetia>(conditions).GetRemainingAsync();
+                }
+                results.Select(item => { item.Success = true; return item; }).ToList();
+                goetias = results;
+
+            } catch (AmazonDynamoDBException e) {
+                Console.WriteLine(e.Message);
+            } catch (AmazonServiceException e) {
+                Console.WriteLine(e.Message);
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
+
+            return goetias;
+        }
+
+        // TODO: doesnt work
+        public async Task<List<Goetia>> PerformSearchQuery2(string searchvalue) {
+
+            List<Goetia> goetias = new List<Goetia>();
+            AmazonDynamoDBClient client = DynamoDBAPI.DynamoDBClient;
+
+            try {
+                var condition1 = new Condition {
+                    AttributeValueList = new List<AttributeValue> {
+                        new AttributeValue(searchvalue)
+                    },
+                    ComparisonOperator = ComparisonOperator.CONTAINS
+                };
+
+                ScanRequest scanRequest = new ScanRequest("Goetia") {
+                    ConditionalOperator = ConditionalOperator.OR,
+                    ScanFilter = new Dictionary<string, Condition> {
+                        {  "Keywords", condition1 },
+                        {  "Name", condition1 },
+
+                    }
+                };
+                var response = await DynamoDBAPI.DynamoDBClient.ScanAsync(scanRequest);
+
+                foreach (Dictionary<string, AttributeValue> item in response.Items) {
+                    // Process the result.
+                    Console.WriteLine(item);
+                }
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
+
+
+            return goetias;
+
+        }
         public void testImage() {
 
             // Issue request and remember to dispose of the response
