@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using GoetiaGuide.Core.Common;
+using GoetiaGuide.Core.Models;
 using GoetiaGuide.Core.ViewModels;
 using GoetiaGuide.Core.Views.Base;
 using GoetiaGuide.Core.Views.ViewCells;
@@ -28,6 +30,10 @@ namespace GoetiaGuide.Core.Views.ContentPages {
 
         #region Initialization
         public GoetiaListContentPage() {
+        }
+
+        public GoetiaListContentPage(List<Goetia>goetias) {
+            ViewModel.UpdateListViewModel(goetias);
             Setup();
             LoadData();
         }
@@ -37,15 +43,11 @@ namespace GoetiaGuide.Core.Views.ContentPages {
 
         #region Private API
         private void Setup() {
-            Title = "Search Results (72)";
+            Title = $"Search Results ({ViewModel.Goetias.Count})";
             Content = ListView;
         }
 
         private void LoadData() {
-            ViewModel.Items.Add(new ImageLabelViewModel("Item 1", "test", 1));
-            ViewModel.Items.Add(new ImageLabelViewModel("Item 2", "test", 2));
-            ViewModel.Items.Add(new ImageLabelViewModel("Item 3", "test", 3));
-
             ListView.ItemsSource = ViewModel.Items;
         }
 

@@ -51,7 +51,6 @@ namespace GoetiaGuide.Core.Network {
 
         public async Task<Goetia> GetByNameAsync(string name) {
 
-            // TODO: update to send error message back
             Goetia goetia = new Goetia();
             try {
                 List<ScanCondition> conditions = new List<ScanCondition> {
@@ -78,7 +77,6 @@ namespace GoetiaGuide.Core.Network {
 
         public async Task<Goetia> GetByIDAsync(int id) {
 
-            // TODO: update to send error message back
             Goetia goetia = new Goetia();
             try {
                 List<ScanCondition> conditions = new List<ScanCondition> {
@@ -108,7 +106,7 @@ namespace GoetiaGuide.Core.Network {
             List<Goetia> goetias = new List<Goetia>();
             try {
                 List<ScanCondition> conditions = new List<ScanCondition> {
-                    new ScanCondition(nameof(Goetia.Keywords), ScanOperator.Contains, searchValue),
+                    new ScanCondition(nameof(Goetia.Keywords), ScanOperator.Contains, searchValue.ToLower()),
                 };
                 // search in Keywords col
                 var results = await _Context.ScanAsync<Goetia>(conditions).GetRemainingAsync();
@@ -116,7 +114,7 @@ namespace GoetiaGuide.Core.Network {
                 // search in name col
                 if (results.Count == 0) {
                     conditions = new List<ScanCondition> {
-                    new ScanCondition(nameof(Goetia.Keywords), ScanOperator.Contains, searchValue),
+                    new ScanCondition(nameof(Goetia.Name), ScanOperator.Contains, searchValue),
                 };
                     results = await _Context.ScanAsync<Goetia>(conditions).GetRemainingAsync();
                 }
@@ -135,57 +133,73 @@ namespace GoetiaGuide.Core.Network {
         }
 
         // TODO: doesnt work
-        public async Task<List<Goetia>> PerformSearchQuery2(string searchvalue) {
+        //public async Task<List<Goetia>> PerformSearchQuery2(string searchvalue) {
 
-            List<Goetia> goetias = new List<Goetia>();
-            AmazonDynamoDBClient client = DynamoDBAPI.DynamoDBClient;
+        //    List<Goetia> goetias = new List<Goetia>();
+        //    AmazonDynamoDBClient client = DynamoDBAPI.DynamoDBClient;
 
+        //    try {
+        //        var condition1 = new Condition {
+        //            AttributeValueList = new List<AttributeValue> {
+        //                new AttributeValue(searchvalue)
+        //            },
+        //            ComparisonOperator = ComparisonOperator.CONTAINS
+        //        };
+
+        //        ScanRequest scanRequest = new ScanRequest("Goetia") {
+        //            ConditionalOperator = ConditionalOperator.OR,
+        //            ScanFilter = new Dictionary<string, Condition> {
+        //                {  "Keywords", condition1 },
+        //                {  "Name", condition1 },
+
+        //            }
+        //        };
+        //        var response = await DynamoDBAPI.DynamoDBClient.ScanAsync(scanRequest);
+
+        //        foreach (Dictionary<string, AttributeValue> item in response.Items) {
+        //            // Process the result.
+        //            Console.WriteLine(item);
+        //        }
+        //    } catch (Exception ex) {
+        //        Console.WriteLine(ex.Message);
+        //    }
+
+
+        //    return goetias;
+
+        //}
+
+        public async Task<bool> UpdateItem(int id, List<string> newList) {
+
+            var client = DynamoDBAPI.DynamoDBClient;
+
+            var request = new UpdateItemRequest {
+                TableName = "Goetias",
+                Key = new Dictionary<string, AttributeValue>() { { "ID", new AttributeValue { N = id.ToString() } } },
+                ExpressionAttributeNames = new Dictionary<string, string>()
+                            {
+                    {"#P", "Keywords"},
+
+                },
+                ExpressionAttributeValues = new Dictionary<string, AttributeValue>()
+                            {
+                    {":p",new AttributeValue {SS = newList } }
+                },
+
+                // This expression does the following:
+                // 2) Reduces the price
+
+                UpdateExpression = "SET #P = :p"
+            };
             try {
-                var condition1 = new Condition {
-                    AttributeValueList = new List<AttributeValue> {
-                        new AttributeValue(searchvalue)
-                    },
-                    ComparisonOperator = ComparisonOperator.CONTAINS
-                };
-
-                ScanRequest scanRequest = new ScanRequest("Goetia") {
-                    ConditionalOperator = ConditionalOperator.OR,
-                    ScanFilter = new Dictionary<string, Condition> {
-                        {  "Keywords", condition1 },
-                        {  "Name", condition1 },
-
-                    }
-                };
-                var response = await DynamoDBAPI.DynamoDBClient.ScanAsync(scanRequest);
-
-                foreach (Dictionary<string, AttributeValue> item in response.Items) {
-                    // Process the result.
-                    Console.WriteLine(item);
-                }
+                var response = await client.UpdateItemAsync(request);
+                Console.WriteLine("Success");
             } catch (Exception ex) {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"unsuccessful: {id} : {ex.Message}");
             }
 
-
-            return goetias;
-
+            return true;
         }
-        public void testImage() {
-
-            // Issue request and remember to dispose of the response
-            try {
-                if (S3API.BucketExist().Result) {
-                    // TODO: get image via URL: ex {BUCKET_NAME}.s3.amazonaws.com/{IMAGE_NAME.png}
-
-                }
-                Console.WriteLine("gg");
-            } catch (AmazonS3Exception e) {
-                Console.WriteLine(e.Message);
-
-            }
-
-        }
-
 
         #endregion
 

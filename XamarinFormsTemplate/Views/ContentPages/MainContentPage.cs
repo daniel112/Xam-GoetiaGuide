@@ -176,7 +176,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
 
         #region Private API
         private void Setup() {
-
+        
             NavigationPage.SetBackButtonTitle(this, "");
             this.Title = "Find A Spirit";
 
@@ -217,9 +217,9 @@ namespace GoetiaGuide.Core.Views.ContentPages {
                 GoetiaDetailContentPage destinationCP = new GoetiaDetailContentPage(results.FirstOrDefault());
                 await this.Navigation.PushAsync(destinationCP);
             } else if (results.Count > 1) {
-                //Navigation.PushAsync(new GoetiaListContentPage());
+                await Navigation.PushAsync(new GoetiaListContentPage(results));
             } else {
-                Console.WriteLine("RESULTS DOESNT EXIST");
+                await DisplayAlert("Search", "No result. Please try a different keyword search", "OK");
             }
             this.CustomActivityIndicator.IsRunning = false;
 
@@ -234,6 +234,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
         }
 
         private void ButtonSearch_ClickedAsync(object sender, EventArgs e) {
+
             PerformSearch();
         }
 
@@ -251,7 +252,7 @@ namespace GoetiaGuide.Core.Views.ContentPages {
         }
 
         public void Input_DidPressReturnAsync(string text, InputTextContentView inputText) {
-            PerformSearch();
+           PerformSearch();
         }
         #endregion
     }

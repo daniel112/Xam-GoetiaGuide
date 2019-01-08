@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using GoetiaGuide.Core.Common;
 using GoetiaGuide.Core.Components;
+using GoetiaGuide.Core.Network;
 using GoetiaGuide.Core.ViewModels;
 using GoetiaGuide.Core.Views;
 using GoetiaGuide.Core.Views.Base;
@@ -118,6 +120,7 @@ namespace GoetiaGuide.Views {
 
         #region Private API
         private void Setup() {
+
             this.BackgroundColor = Color.FromHex(AppTheme.DefaultBackgroundColor());
             AbsoluteLayout layout = new AbsoluteLayout();
 
