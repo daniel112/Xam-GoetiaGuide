@@ -248,6 +248,9 @@ namespace GoetiaGuide.Core.Views.ContentPages {
 
         #region Delegates
         public void Input_TextChanged(string text, InputTextContentView inputText) {
+            if (text != " ")
+                text = text.Trim(); 
+
             ViewModel.SearchText = text;
         }
 

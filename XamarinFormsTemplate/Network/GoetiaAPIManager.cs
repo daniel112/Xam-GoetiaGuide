@@ -132,42 +132,6 @@ namespace GoetiaGuide.Core.Network {
             return goetias;
         }
 
-        // TODO: doesnt work
-        //public async Task<List<Goetia>> PerformSearchQuery2(string searchvalue) {
-
-        //    List<Goetia> goetias = new List<Goetia>();
-        //    AmazonDynamoDBClient client = DynamoDBAPI.DynamoDBClient;
-
-        //    try {
-        //        var condition1 = new Condition {
-        //            AttributeValueList = new List<AttributeValue> {
-        //                new AttributeValue(searchvalue)
-        //            },
-        //            ComparisonOperator = ComparisonOperator.CONTAINS
-        //        };
-
-        //        ScanRequest scanRequest = new ScanRequest("Goetia") {
-        //            ConditionalOperator = ConditionalOperator.OR,
-        //            ScanFilter = new Dictionary<string, Condition> {
-        //                {  "Keywords", condition1 },
-        //                {  "Name", condition1 },
-
-        //            }
-        //        };
-        //        var response = await DynamoDBAPI.DynamoDBClient.ScanAsync(scanRequest);
-
-        //        foreach (Dictionary<string, AttributeValue> item in response.Items) {
-        //            // Process the result.
-        //            Console.WriteLine(item);
-        //        }
-        //    } catch (Exception ex) {
-        //        Console.WriteLine(ex.Message);
-        //    }
-
-
-        //    return goetias;
-
-        //}
 
         public async Task<bool> UpdateItem(int id, List<string> newList) {
 
@@ -186,8 +150,6 @@ namespace GoetiaGuide.Core.Network {
                     {":p",new AttributeValue {SS = newList } }
                 },
 
-                // This expression does the following:
-                // 2) Reduces the price
 
                 UpdateExpression = "SET #P = :p"
             };
